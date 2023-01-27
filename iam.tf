@@ -39,6 +39,7 @@ resource "aws_iam_policy" "cognito_es_policy" {
   count  = var.cognito_enabled ? 1 : 0
   name   = "${var.name}-COGNITO-ACCESS-ES-POLICY"
   policy = data.aws_iam_policy_document.cognito_es_policy[0].json
+
 }
 
 
