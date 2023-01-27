@@ -15,12 +15,15 @@ output "cognito_map" {
 
 output "user_pool_id" {
   value = try(aws_cognito_user_pool.user_pool[0].id, "")
+  type = string
 }
 
 output "identity_pool_id" {
   value = try(aws_cognito_identity_pool.identity_pool[0].id, "")
+  type = string
 }
 
 output "app_client_id" {
   value = try(aws_cognito_user_pool_client.client[0].id, "")
+  type  = string
 }
