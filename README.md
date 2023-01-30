@@ -16,7 +16,7 @@ OpenSearch with basic setup with domain level access policy
 ```
 module "opensearch" {
     source  = "cyberlabrs/opensearch/aws"
-    version = "0.0.2"
+    version = "0.0.3"
     name    = "basic-os"
     region  = "eu-central-1"
     
@@ -42,7 +42,7 @@ OpenSearch with basic setup with fine grained access control with default policy
 ```
 module "opensearch" {
     source  = "cyberlabrs/opensearch/aws"
-    version = "0.0.2"
+    version = "0.0.3"
     name    = "basic-os"
     region  = "eu-central-1"
     advanced_security_options_enabled = true
@@ -56,7 +56,7 @@ OpenSearch with basic setup with fine grained access control with default policy
 ```
 module "opensearch" {
     source  = "cyberlabrs/opensearch/aws"
-    version = "0.0.2"
+    version = "0.0.3"
     name    = "vpc-os"
     region  = "eu-central-1"
     advanced_security_options_enabled = true
@@ -75,7 +75,7 @@ OpenSearch with basic setup with fine grained access control with Cognito authen
 ```
 module "opensearch" {
     source  = "cyberlabrs/opensearch/aws"
-    version = "0.0.2"
+    version = "0.0.3"
     name    = "vpc-os"
     region  = "eu-central-1"
     advanced_security_options_enabled = true
