@@ -80,7 +80,7 @@ variable "volume_type" {
 variable "access_policy" {
   description = "Create generic access policy"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "tls_security_policy" {
@@ -92,11 +92,13 @@ variable "tls_security_policy" {
 variable "vpc" {
   description = "VPC name"
   type        = string
+  default     = ""
 }
 
 variable "subnet_ids" {
   description = "CIDS blocks of private subnets"
   type        = list(string)
+  default     = []
 }
 
 variable "inside_vpc" {
@@ -114,23 +116,19 @@ variable "cognito_enabled" {
 variable "allowed_cidrs" {
   type        = list(string)
   description = "Allowed cidrs in security group"
+  default     = []
 }
 
 variable "zone_id" {
   type        = string
   description = "Route 53 Zone id"
-}
-
-variable "extra_aws_role_enabled" {
-  type        = bool
-  description = "If cross account access is enabled"
-  default     = false
+  default     = ""
 }
 
 variable "advanced_security_options_enabled" {
   type        = bool
   description = "If advanced security options is enabled"
-  default     = true
+  default     = false
 }
 
 
@@ -182,4 +180,11 @@ variable "aws_service_name_for_linked_role" {
   type        = string
   description = "AWS service name for linked role"
   default     = "opensearchservice.amazonaws.com"
+}
+
+
+variable "default_policy_for_fine_grained_access_control" {
+  type        = bool
+  description = "If domain access is open"
+  default     = false
 }

@@ -10,6 +10,83 @@ No requirements.
 | <a name="provider_aws.extra"></a> [aws.extra](#provider\_aws.extra) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
+## Examples
+OpenSearch with basic setup with domain level access policy
+
+```
+module "opensearch" {
+    source  = "cyberlabrs/opensearch/aws"
+    version = "0.0.2"
+    name    = "basic-os"
+    region  = "eu-central-1"
+    
+    policy = jsonencode({
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+            "Effect": "Allow",
+            "Principal": {
+            "AWS": ["arn:aws:iam::acc-number:role/xxx"]
+            },
+       "Action": "es:*",
+       "Resource": "arn:aws:es:region:acc-number:domain/domain-name/*"
+    }
+  ]
+    })
+    
+}
+```
+
+OpenSearch with basic setup with fine grained access control with default policy with internal_user enabled
+
+```
+module "opensearch" {
+    source  = "cyberlabrs/opensearch/aws"
+    version = "0.0.2"
+    name    = "basic-os"
+    region  = "eu-central-1"
+    advanced_security_options_enabled = true
+    default_policy_for_fine_grained_access_control = true
+    internal_user_database_enabled = true
+}
+```
+
+OpenSearch with basic setup with fine grained access control with default policy with internal_user enabled inside VPC
+
+```
+module "opensearch" {
+    source  = "cyberlabrs/opensearch/aws"
+    version = "0.0.2"
+    name    = "vpc-os"
+    region  = "eu-central-1"
+    advanced_security_options_enabled = true
+    default_policy_for_fine_grained_access_control = true
+    internal_user_database_enabled = true
+    inside_vpc = true
+    vpc = "vpc-xxxxxxxx"
+    subnet_ids = ["subnet-1xxx","subnet-2xxx"]
+    allowed_cidrs = ["xxxxxx"]
+}
+```
+
+
+OpenSearch with basic setup with fine grained access control with Cognito authentication and custom domain
+
+```
+module "opensearch" {
+    source  = "cyberlabrs/opensearch/aws"
+    version = "0.0.2"
+    name    = "vpc-os"
+    region  = "eu-central-1"
+    advanced_security_options_enabled = true
+    custom_endpoint                 = "kibana.dev.fornul.io"
+    custom_endpoint_enabled         = true
+    custom_endpoint_certificate_arn = "xxxx"
+    zone_id                         = "zone_id"
+    cognito_enabled                 =   true
+}
+```
+
 ## Modules
 
 No modules.
@@ -87,3 +164,4 @@ No modules.
 | <a name="output_identity_pool_id"></a> [identity\_pool\_id](#output\_identity\_pool\_id) | n/a |
 | <a name="output_os_password"></a> [os\_password](#output\_os\_password) | n/a |
 | <a name="output_user_pool_id"></a> [user\_pool\_id](#output\_user\_pool\_id) | n/a |
+

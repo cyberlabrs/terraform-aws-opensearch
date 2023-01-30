@@ -40,19 +40,12 @@ resource "aws_iam_service_linked_role" "es" {
   aws_service_name = var.aws_service_name_for_linked_role
 }
 
-resource "aws_iam_service_linked_role" "es_shared" {
-  count            = var.extra_aws_role_enabled ? 1 : 0
-  provider         = aws.extra
-  aws_service_name = var.aws_service_name_for_linked_role
-}
-
 resource "time_sleep" "role_dependency" {
   create_duration = "10s"
 
   triggers = {
-    # This sets up a proper dependency on the RAM association
-    role_arn = try(aws_iam_role.cognito_es_role[0].arn, "arn:aws:iam::911111111111:role/mockup")
-    linked_role_id = try(aws_iam_service_linked_role.es_shared[0].id, "11111")
+    role_arn       = try(aws_iam_role.cognito_es_role[0].arn, "arn:aws:iam::911111111111:role/mockup"),
+    linked_role_id = try(aws_iam_service_linked_role.es.id, "11111")
   }
 }
 
@@ -71,7 +64,7 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 
   dynamic "vpc_options" {
-    for_each = var.inside_vpc == true ? toset([1]) : toset([0])
+    for_each = var.inside_vpc ? [1] : []
     content {
       subnet_ids         = [var.subnet_ids[0]]
       security_group_ids = [aws_security_group.es[0].id]
@@ -79,11 +72,11 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 
   dynamic "cognito_options" {
-    for_each = var.cognito_enabled == true ? toset([1]) : toset([0])
+    for_each = var.cognito_enabled ? [1] : []
     content {
       enabled          = var.cognito_enabled
-      user_pool_id     = var.implicit_create_cognito == true ? try(aws_cognito_user_pool.user_pool[0].id, "user_pool") : var.user_pool_id
-      identity_pool_id = var.identity_pool_id == "" && var.implicit_create_cognito == true ? try(aws_cognito_identity_pool.identity_pool[0].id, "identity_pool") : var.identity_pool_id
+      user_pool_id     = var.implicit_create_cognito == true ? aws_cognito_user_pool.user_pool[0].id : var.user_pool_id
+      identity_pool_id = var.identity_pool_id == "" && var.implicit_create_cognito == true ? aws_cognito_identity_pool.identity_pool[0].id : var.identity_pool_id
       role_arn         = var.implicit_create_cognito == true ? time_sleep.role_dependency.triggers["role_arn"] : var.cognito_role_arn
     }
   }
@@ -106,13 +99,15 @@ resource "aws_opensearch_domain" "opensearch" {
     enabled = true
   }
 
-  access_policies = var.access_policy == "" ? (<<CONFIG
+  access_policies = var.access_policy == null && var.default_policy_for_fine_grained_access_control ? (<<CONFIG
     {
         "Version": "2012-10-17",
         "Statement": [
             {
                 "Action": "es:*",
-                "Principal": "*",
+                "Principal": {
+                  "AWS": "*"
+                  },
                 "Effect": "Allow",
                 "Resource": ["arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}/*",
                             "arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}"]
@@ -130,7 +125,7 @@ resource "aws_opensearch_domain" "opensearch" {
     tls_security_policy             = var.tls_security_policy
   }
 
-  depends_on = [aws_iam_service_linked_role.es, aws_iam_service_linked_role.es_shared[0],time_sleep.role_dependency]
+  depends_on = [aws_iam_service_linked_role.es, time_sleep.role_dependency]
 }
 
 
