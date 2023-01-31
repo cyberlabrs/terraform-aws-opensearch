@@ -34,6 +34,13 @@ resource "aws_security_group" "es" {
     protocol    = "tcp"
     cidr_blocks = var.allowed_cidrs
   }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_cidrs
+  }
 }
 
 resource "aws_iam_service_linked_role" "es" {
@@ -63,10 +70,12 @@ resource "aws_opensearch_domain" "opensearch" {
     }
   }
 
+  advanced_options = var.advanced_options
+
   dynamic "vpc_options" {
     for_each = var.inside_vpc ? [1] : []
     content {
-      subnet_ids         = [var.subnet_ids[0]]
+      subnet_ids         = var.subnet_ids
       security_group_ids = [aws_security_group.es[0].id]
     }
   }
@@ -82,21 +91,64 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 
   cluster_config {
-    instance_type = var.instance_type
+    instance_type            = var.instance_type
+    dedicated_master_enabled = try(var.cluster_config["dedicated_master_enabled"], false)
+    dedicated_master_count   = try(var.cluster_config["dedicated_master_count"], 0)
+    dedicated_master_type    = try(var.cluster_config["dedicated_master_type"], "t2.small.elasticsearch")
+    instance_count           = try(var.cluster_config["instance_count"], 1)
+    warm_enabled             = try(var.cluster_config["warm_enabled"], false)
+    warm_count               = try(var.cluster_config["warm_enabled"], false) ? try(var.cluster_config["warm_count"], null) : null
+    warm_type                = try(var.cluster_config["warm_type"], false) ? try(var.cluster_config["warm_type"], null) : null
+    zone_awareness_enabled   = try(var.cluster_config["zone_awareness_enabled"], false)
+    dynamic "zone_awareness_config" {
+      for_each = try(var.cluster_config["avability_zone_count"], 1) > 1 && try(var.cluster_config["zone_awareness_enabled"], false) ? [1] : []
+      content {
+        availability_zone_count = try(var.cluster_config["avability_zone_count"], 1)
+      }
+    }
   }
 
   encrypt_at_rest {
-    enabled = true
+    enabled    = try(var.encrypt_at_rest["enabled"], false)
+    kms_key_id = try(var.encrypt_at_rest["kms_key_id"], "")
   }
+
+  log_publishing_options {
+    enabled                  = try(var.log_publishing_options["audit_logs_enabled"], false)
+    log_type                 = "AUDIT_LOGS"
+    cloudwatch_log_group_arn = try(var.log_publishing_options["audit_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  }
+
+  log_publishing_options {
+    enabled                  = try(var.log_publishing_options["application_logs_enabled"], false)
+    log_type                 = "ES_APPLICATION_LOGS"
+    cloudwatch_log_group_arn = try(var.log_publishing_options["application_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  }
+
+  log_publishing_options {
+    enabled                  = try(var.log_publishing_options["index_logs_enabled"], false)
+    log_type                 = "INDEX_SLOW_LOGS"
+    cloudwatch_log_group_arn = try(var.log_publishing_options["index_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  }
+
+  log_publishing_options {
+    enabled                  = try(var.log_publishing_options["search_logs_enabled"], false)
+    log_type                 = "SEARCH_SLOW_LOGS"
+    cloudwatch_log_group_arn = try(var.log_publishing_options["search_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  }
+
+
 
   ebs_options {
     ebs_enabled = var.ebs_enabled
+    iops        = var.iops
+    throughput  = var.throughput
     volume_size = var.volume_size
     volume_type = var.volume_type
   }
 
   node_to_node_encryption {
-    enabled = true
+    enabled = var.node_to_node_encryption
   }
 
   access_policies = var.access_policy == null && var.default_policy_for_fine_grained_access_control ? (<<CONFIG
@@ -124,7 +176,7 @@ resource "aws_opensearch_domain" "opensearch" {
     custom_endpoint_certificate_arn = var.custom_endpoint_enabled ? var.custom_endpoint_certificate_arn : null
     tls_security_policy             = var.tls_security_policy
   }
-
+  tags       = var.tags
   depends_on = [aws_iam_service_linked_role.es, time_sleep.role_dependency]
 }
 

@@ -44,11 +44,11 @@ resource "aws_cognito_identity_pool" "identity_pool" {
   allow_unauthenticated_identities = true
 
   cognito_identity_providers {
-    client_id     =  aws_cognito_user_pool_client.client[0].id
+    client_id     = aws_cognito_user_pool_client.client[0].id
     provider_name = aws_cognito_user_pool.user_pool[0].endpoint
   }
 
-  lifecycle {ignore_changes = [cognito_identity_providers]}
+  lifecycle { ignore_changes = [cognito_identity_providers] }
 }
 
 
