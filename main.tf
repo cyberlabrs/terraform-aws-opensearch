@@ -51,7 +51,7 @@ resource "time_sleep" "role_dependency" {
   create_duration = "10s"
 
   triggers = {
-    role_arn       = try(aws_iam_role.cognito_es_role[0].arn, "arn:aws:iam::911111111111:role/mockup"),
+    role_arn       = try(aws_iam_role.cognito_es_role[0].arn, null),
     linked_role_id = try(aws_iam_service_linked_role.es.id, "11111")
   }
 }
@@ -113,30 +113,41 @@ resource "aws_opensearch_domain" "opensearch" {
     kms_key_id = try(var.encrypt_at_rest["kms_key_id"], "")
   }
 
-  log_publishing_options {
-    enabled                  = try(var.log_publishing_options["audit_logs_enabled"], false)
-    log_type                 = "AUDIT_LOGS"
-    cloudwatch_log_group_arn = try(var.log_publishing_options["audit_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  dynamic "log_publishing_options" {
+    for_each = try(var.log_publishing_options["audit_logs_enabled"], false) ? [1] : []
+    content {
+      enabled                  = try(var.log_publishing_options["audit_logs_enabled"], false)
+      log_type                 = "AUDIT_LOGS"
+      cloudwatch_log_group_arn = try(var.log_publishing_options["audit_logs_cw_log_group_arn"], null)
+    }
   }
 
-  log_publishing_options {
-    enabled                  = try(var.log_publishing_options["application_logs_enabled"], false)
-    log_type                 = "ES_APPLICATION_LOGS"
-    cloudwatch_log_group_arn = try(var.log_publishing_options["application_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  dynamic "log_publishing_options" {
+    for_each = try(var.log_publishing_options["application_logs_enabled"], false) ? [1] : []
+    content {
+      enabled                  = try(var.log_publishing_options["application_logs_enabled"], false)
+      log_type                 = "ES_APPLICATION_LOGS"
+      cloudwatch_log_group_arn = try(var.log_publishing_options["application_logs_cw_log_group_arn"], null)
+    }
   }
 
-  log_publishing_options {
-    enabled                  = try(var.log_publishing_options["index_logs_enabled"], false)
-    log_type                 = "INDEX_SLOW_LOGS"
-    cloudwatch_log_group_arn = try(var.log_publishing_options["index_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  dynamic "log_publishing_options" {
+    for_each = try(var.log_publishing_options["index_logs_enabled"], false) ? [1] : []
+    content {
+      enabled                  = try(var.log_publishing_options["index_logs_enabled"], false)
+      log_type                 = "INDEX_SLOW_LOGS"
+      cloudwatch_log_group_arn = try(var.log_publishing_options["index_logs_cw_log_group_arn"], null)
+    }
   }
 
-  log_publishing_options {
-    enabled                  = try(var.log_publishing_options["search_logs_enabled"], false)
-    log_type                 = "SEARCH_SLOW_LOGS"
-    cloudwatch_log_group_arn = try(var.log_publishing_options["search_logs_cw_log_group_arn"], "arn:aws:logs:eu-central-1:911111111111:log-group:/aws/xxx/xxxx:*")
+  dynamic "log_publishing_options" {
+    for_each = try(var.log_publishing_options["search_logs_enabled"], false) ? [1] : []
+    content {
+      enabled                  = try(var.log_publishing_options["search_logs_enabled"], false)
+      log_type                 = "SEARCH_SLOW_LOGS"
+      cloudwatch_log_group_arn = try(var.log_publishing_options["search_logs_cw_log_group_arn"], null)
+    }
   }
-
 
 
   ebs_options {
