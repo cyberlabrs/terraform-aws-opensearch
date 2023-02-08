@@ -1,3 +1,5 @@
+# AWS OpenSearch Terraform Module
+
 ## Requirements
 
 No requirements.
@@ -10,13 +12,14 @@ No requirements.
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.4.3 |
 | <a name="provider_time"></a> [time](#provider\_time) | >= 0.9.1 |
 
-## Examples
+## Usage
+
 OpenSearch with basic setup with domain level access policy
 
-```
+```terraform
 module "opensearch" {
   source  = "cyberlabrs/opensearch/aws"
-  version = "0.0.6"
+  version = "0.0.7"
   name    = "basic-os"
   region  = "eu-central-1"
 
@@ -39,10 +42,10 @@ module "opensearch" {
 
 OpenSearch with basic setup with fine grained access control with default policy with internal_user enabled
 
-```
+```terraform
 module "opensearch" {
   source                                         = "cyberlabrs/opensearch/aws"
-  version                                        = "0.0.6"
+  version                                        = "0.0.7"
   name                                           = "basic-os"
   region                                         = "eu-central-1"
   advanced_security_options_enabled              = true
@@ -57,10 +60,10 @@ module "opensearch" {
 
 OpenSearch with basic setup with fine grained access control with default policy with internal_user enabled inside VPC
 
-```
+```terraform
 module "opensearch" {
   source                                         = "cyberlabrs/opensearch/aws"
-  version                                        = "0.0.6"
+  version                                        = "0.0.7"
   name                                           = "vpc-os"
   region                                         = "eu-central-1"
   advanced_security_options_enabled              = true
@@ -80,10 +83,10 @@ module "opensearch" {
 
 OpenSearch with basic setup with fine grained access control with Cognito authentication and custom domain
 
-```
+```terraform
 module "opensearch" {
   source                            = "cyberlabrs/opensearch/aws"
-  version                           = "0.0.6"
+  version                           = "0.0.7"
   name                              = "vpc-os"
   region                            = "eu-central-1"
   advanced_security_options_enabled = true
