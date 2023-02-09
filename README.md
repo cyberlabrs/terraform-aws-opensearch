@@ -19,7 +19,6 @@ OpenSearch with basic setup with domain level access policy
 ```terraform
 module "opensearch" {
   source  = "cyberlabrs/opensearch/aws"
-  version = "0.0.7"
   name    = "basic-os"
   region  = "eu-central-1"
 
@@ -45,7 +44,6 @@ OpenSearch with basic setup with fine grained access control with default policy
 ```terraform
 module "opensearch" {
   source                                         = "cyberlabrs/opensearch/aws"
-  version                                        = "0.0.7"
   name                                           = "basic-os"
   region                                         = "eu-central-1"
   advanced_security_options_enabled              = true
@@ -63,7 +61,6 @@ OpenSearch with basic setup with fine grained access control with default policy
 ```terraform
 module "opensearch" {
   source                                         = "cyberlabrs/opensearch/aws"
-  version                                        = "0.0.7"
   name                                           = "vpc-os"
   region                                         = "eu-central-1"
   advanced_security_options_enabled              = true
@@ -162,7 +159,7 @@ No modules.
 | <a name="input_internal_user_database_enabled"></a> [internal\_user\_database\_enabled](#input\_internal\_user\_database\_enabled) | Internal user database enabled. This should be enabled if we want authentication with master username and master password. | `bool` | `false` | no |
 | <a name="input_iops"></a> [iops](#input\_iops) | Baseline input/output (I/O) performance of EBS volumes attached to data nodes | `number` | `null` | no |
 | <a name="input_log_publishing_options"></a> [log\_publishing\_options](#input\_log\_publishing\_options) | Encrypt at rest | `any` | `{}` | no |
-| <a name="input_master_password"></a> [master\_password](#input\_master\_password) | Master password for accessing OpenSearch. If not specified password will be random generated. | `string` | `""` | no |
+| <a name="input_master_password"></a> [master\_password](#input\_master\_password) | Master password for accessing OpenSearch. If not specified password will be randomly generated. | `string` | `""` | no |
 | <a name="input_master_user_arn"></a> [master\_user\_arn](#input\_master\_user\_arn) | Master user ARN for accessing OpenSearch. If this is set, `advanced_security_options_enabled` must be set to true and  `internal_user_database_enabled` should be set to false. | `string` | `""` | no |
 | <a name="input_master_user_name"></a> [master\_user\_name](#input\_master\_user\_name) | Master username for accessing OpenSerach. | `string` | `"admin"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of OpenSerach domain and sufix of all other resources. | `string` | n/a | yes |
