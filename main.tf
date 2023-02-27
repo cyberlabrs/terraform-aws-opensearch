@@ -48,7 +48,7 @@ resource "aws_iam_service_linked_role" "es" {
 }
 
 resource "time_sleep" "role_dependency" {
-  create_duration = "10s"
+  create_duration = "20s"
 
   triggers = {
     role_arn       = try(aws_iam_role.cognito_es_role[0].arn, null),
