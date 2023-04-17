@@ -9,11 +9,6 @@ data "aws_vpc" "selected" {
   id    = var.vpc
 }
 
-data "aws_subnet" "selected" {
-  for_each = toset(var.subnet_ids)
-  id       = each.key
-}
-
 resource "random_password" "password" {
   length      = 32
   special     = false
