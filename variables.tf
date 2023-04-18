@@ -10,7 +10,7 @@ variable "engine_version" {
 }
 
 variable "name" {
-  description = "Name of OpenSerach domain and sufix of all other resources."
+  description = "Name of OpenSerach domain and suffix of all other resources."
   type        = string
 }
 
