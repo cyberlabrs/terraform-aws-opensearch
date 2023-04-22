@@ -10,6 +10,7 @@ data "aws_vpc" "selected" {
 }
 
 resource "random_password" "password" {
+  count       = var.internal_user_database_enabled ? 1 : 0
   length      = 32
   special     = false
   min_numeric = 1
@@ -61,7 +62,7 @@ resource "aws_opensearch_domain" "opensearch" {
     master_user_options {
       master_user_arn      = var.master_user_arn == "" ? try(aws_iam_role.authenticated[0].arn, null) : var.master_user_arn
       master_user_name     = var.internal_user_database_enabled ? var.master_user_name : ""
-      master_user_password = var.internal_user_database_enabled ? coalesce(var.master_password, random_password.password.result) : ""
+      master_user_password = var.internal_user_database_enabled ? coalesce(var.master_password, random_password.password[0].result) : ""
     }
   }
 
