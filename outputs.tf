@@ -44,9 +44,9 @@ output "endpoint" {
   value       = aws_opensearch_domain.opensearch.endpoint
 }
 
-output "kibana_endpoint" {
-  description = "Domain-specific endpoint for kibana without https scheme"
-  value       = aws_opensearch_domain.opensearch.kibana_endpoint
+output "dashboard_endpoint" {
+  description = "Domain-specific endpoint for Dashboard without https scheme"
+  value       = aws_opensearch_domain.opensearch.dashboard_endpoint
 }
 
 output "tags_all" {
