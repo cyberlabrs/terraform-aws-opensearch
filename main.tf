@@ -168,8 +168,7 @@ resource "aws_opensearch_domain" "opensearch" {
                   "AWS": "*"
                   },
                 "Effect": "Allow",
-                "Resource": ["arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}/*",
-                            "arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}"]
+                "Resource": "arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}/*"
             }
         ]
     }
