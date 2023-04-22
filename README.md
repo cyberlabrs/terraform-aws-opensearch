@@ -77,24 +77,28 @@ module "opensearch" {
 ```
 
 
-OpenSearch with basic setup with fine grained access control with Cognito authentication and custom domain
+OpenSearch with basic setup with fine grained access control with Cognito authentication (need to go to AWS Cognito User Pool to create a new user to login to Dashboard)
 
 ```terraform
 module "opensearch" {
-  source                            = "cyberlabrs/opensearch/aws"
-  version                           = "0.0.7"
-  name                              = "vpc-os"
-  region                            = "eu-central-1"
-  advanced_security_options_enabled = true
-  custom_endpoint                   = "xxxxxx"
-  custom_endpoint_enabled           = true
-  custom_endpoint_certificate_arn   = "xxxx"
-  zone_id                           = "zone_id"
-  cognito_enabled                   = true
-  node_to_node_encryption           = true
+  source                                         = "cyberlabrs/opensearch/aws"
+  name                                           = "basic-os"
+  region                                         = "eu-central-1"
+  advanced_security_options_enabled              = true
+  default_policy_for_fine_grained_access_control = true
+  cognito_enabled                                = true
+  node_to_node_encryption                        = true
   encrypt_at_rest = {
     enabled = true
   }
+
+  # custom endpoint if needed
+  custom_endpoint                 = "xxxxxx"
+  custom_endpoint_enabled         = true
+  custom_endpoint_certificate_arn = "xxxx"
+
+  # route53 zone if needed
+  zone_id = "zone_id"
 }
 ```
 
