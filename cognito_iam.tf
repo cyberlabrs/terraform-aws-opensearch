@@ -20,16 +20,15 @@ resource "aws_cognito_user_pool" "user_pool" {
     require_numbers                  = true
     require_symbols                  = true
     require_uppercase                = true
-    temporary_password_validity_days = 90
+    temporary_password_validity_days = 7
   }
-}
 
-resource "aws_cognito_user_pool_client" "client" {
-  count = var.cognito_enabled ? 1 : 0
-  name  = "user_client_${var.name}"
-
-  user_pool_id        = aws_cognito_user_pool.user_pool[0].id
-  explicit_auth_flows = ["ADMIN_NO_SRP_AUTH"]
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+  }
 }
 
 resource "aws_cognito_user_pool_domain" "user_pool_domain" {
@@ -43,11 +42,7 @@ resource "aws_cognito_identity_pool" "identity_pool" {
   identity_pool_name               = "${var.name}_identity_pool"
   allow_unauthenticated_identities = true
 
-  cognito_identity_providers {
-    client_id     = aws_cognito_user_pool_client.client[0].id
-    provider_name = aws_cognito_user_pool.user_pool[0].endpoint
-  }
-
+  # AWS OpenSearch will maintain `cognito_identity_providers`, so ignore it
   lifecycle { ignore_changes = [cognito_identity_providers] }
 }
 

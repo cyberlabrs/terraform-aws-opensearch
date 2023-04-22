@@ -179,7 +179,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_app_client_id"></a> [app\_client\_id](#output\_app\_client\_id) | Cognito user pool app client  ID |
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the domain |
 | <a name="output_availability_zones"></a> [availability\_zones](#output\_availability\_zones) | If the domain was created inside a VPC, the names of the availability zones the configured subnet\_ids were created inside |
 | <a name="output_cognito_map"></a> [cognito\_map](#output\_cognito\_map) | cognito info |

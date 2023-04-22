@@ -24,11 +24,6 @@ output "identity_pool_id" {
   value       = try(aws_cognito_identity_pool.identity_pool[0].id, "")
 }
 
-output "app_client_id" {
-  description = "Cognito user pool app client  ID"
-  value       = try(aws_cognito_user_pool_client.client[0].id, "")
-}
-
 output "arn" {
   description = "ARN of the domain"
   value       = aws_opensearch_domain.opensearch.arn
