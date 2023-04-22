@@ -1,55 +1,37 @@
-resource "aws_cognito_user_pool" "user_pool" {
-  count = var.cognito_enabled ? 1 : 0
-  name  = "cognito-${var.name}"
-
-  admin_create_user_config {
-    allow_admin_create_user_only = true
-  }
-
-  auto_verified_attributes = ["email"]
-  mfa_configuration        = "OFF"
-  username_attributes      = ["email"]
-
-  user_pool_add_ons {
-    advanced_security_mode = "OFF"
-  }
-
-  password_policy {
-    minimum_length                   = 8
-    require_lowercase                = true
-    require_numbers                  = true
-    require_symbols                  = true
-    require_uppercase                = true
-    temporary_password_validity_days = 7
-  }
-
-  account_recovery_setting {
-    recovery_mechanism {
-      name     = "verified_email"
-      priority = 1
+# es access cognito
+data "aws_iam_policy_document" "es_assume_policy" {
+  count   = var.cognito_enabled ? 1 : 0
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["es.amazonaws.com"]
     }
+    actions = ["sts:AssumeRole"]
   }
 }
 
-resource "aws_cognito_user_pool_domain" "user_pool_domain" {
-  count        = var.cognito_enabled ? 1 : 0
-  domain       = var.name
-  user_pool_id = aws_cognito_user_pool.user_pool[0].id
-}
-
-resource "aws_cognito_identity_pool" "identity_pool" {
-  count                            = var.cognito_enabled ? 1 : 0
-  identity_pool_name               = "${var.name}_identity_pool"
-  allow_unauthenticated_identities = true
-
-  # AWS OpenSearch will maintain `cognito_identity_providers`, so ignore it
-  lifecycle { ignore_changes = [cognito_identity_providers] }
+data "aws_iam_policy" "cognito_es_policy" {
+  count = var.cognito_enabled ? 1 : 0
+  name  = "AmazonOpenSearchServiceCognitoAccess"
 }
 
 
+resource "aws_iam_role" "cognito_es_role" {
+  count              = var.cognito_enabled ? 1 : 0
+  name               = "${var.name}_AmazonOpenSearchServiceCognitoAccess"
+  assume_role_policy = data.aws_iam_policy_document.es_assume_policy[0].json
+}
+
+resource "aws_iam_role_policy_attachment" "cognito_es_attach" {
+  count      = var.cognito_enabled ? 1 : 0
+  role       = aws_iam_role.cognito_es_role[0].name
+  policy_arn = data.aws_iam_policy.cognito_es_policy[0].arn
+}
 
 
-//authenticated role
+# authenticated role
 resource "aws_iam_role" "authenticated" {
   count = var.cognito_enabled ? 1 : 0
   name  = format("cognito_authenticated-%s", var.name)
@@ -103,7 +85,7 @@ resource "aws_iam_role_policy" "authenticated" {
 EOF
 }
 
-//unauthenticated role
+# unauthenticated role
 resource "aws_iam_role" "unauthenticated" {
   count = var.cognito_enabled ? 1 : 0
   name  = format("cognito_unauthenticated-%s", var.name)
