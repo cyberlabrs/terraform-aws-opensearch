@@ -1,8 +1,3 @@
-data "aws_iam_policy" "cognito_es_policy" {
-  count = var.cognito_enabled ? 1 : 0
-  name  = "AmazonOpenSearchServiceCognitoAccess"
-}
-
 data "aws_iam_policy_document" "es_assume_policy" {
   count   = var.cognito_enabled ? 1 : 0
   version = "2012-10-17"
@@ -16,10 +11,9 @@ data "aws_iam_policy_document" "es_assume_policy" {
   }
 }
 
-resource "aws_iam_policy" "cognito_es_policy" {
-  count  = var.cognito_enabled ? 1 : 0
-  name   = "${var.name}_CognitoAccessForAmazonOpenSearch"
-  policy = data.aws_iam_policy_document.cognito_es_policy[0].json
+data "aws_iam_policy" "cognito_es_policy" {
+  count = var.cognito_enabled ? 1 : 0
+  name  = "AmazonOpenSearchServiceCognitoAccess"
 }
 
 
@@ -32,5 +26,5 @@ resource "aws_iam_role" "cognito_es_role" {
 resource "aws_iam_role_policy_attachment" "cognito_es_attach" {
   count      = var.cognito_enabled ? 1 : 0
   role       = aws_iam_role.cognito_es_role[0].name
-  policy_arn = aws_iam_policy.cognito_es_policy[0].arn
+  policy_arn = data.aws_iam_policy.cognito_es_policy[0].arn
 }

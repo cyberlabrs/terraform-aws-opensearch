@@ -11,7 +11,7 @@ data "aws_vpc" "selected" {
 
 # Generate random password if not given when `internal_user_database_enabled` is true
 resource "random_password" "password" {
-  count       = var.internal_user_database_enabled && !var.master_password ? 1 : 0
+  count       = var.internal_user_database_enabled && var.master_password == "" ? 1 : 0
   length      = 32
   special     = false
   min_numeric = 1
