@@ -23,7 +23,7 @@ variable "master_user_name" {
 
 
 variable "master_password" {
-  description = "Master password for accessing OpenSearch. If not specified password will be randomly generated."
+  description = "Master password for accessing OpenSearch. If not specified password will be randomly generated. Password will be stored in AWS `System Manager` -> `Parameter Store` "
   type        = string
   default     = ""
 }
