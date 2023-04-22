@@ -33,7 +33,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 
 resource "aws_cognito_user_pool_domain" "user_pool_domain" {
   count        = var.cognito_enabled ? 1 : 0
-  domain       = "opensearch-fornulio-auth"
+  domain       = var.name
   user_pool_id = aws_cognito_user_pool.user_pool[0].id
 }
 
