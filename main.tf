@@ -43,15 +43,6 @@ resource "aws_iam_service_linked_role" "es" {
   aws_service_name = var.aws_service_name_for_linked_role
 }
 
-resource "time_sleep" "role_dependency" {
-  create_duration = "20s"
-
-  triggers = {
-    role_arn       = try(aws_iam_role.cognito_es_role[0].arn, null),
-    linked_role_id = try(aws_iam_service_linked_role.es.id, "11111")
-  }
-}
-
 resource "aws_opensearch_domain" "opensearch" {
   domain_name    = var.name
   engine_version = var.engine_version
@@ -82,7 +73,7 @@ resource "aws_opensearch_domain" "opensearch" {
       enabled          = var.cognito_enabled
       user_pool_id     = var.implicit_create_cognito == true ? aws_cognito_user_pool.user_pool[0].id : var.user_pool_id
       identity_pool_id = var.identity_pool_id == "" && var.implicit_create_cognito == true ? aws_cognito_identity_pool.identity_pool[0].id : var.identity_pool_id
-      role_arn         = var.implicit_create_cognito == true ? time_sleep.role_dependency.triggers["role_arn"] : var.cognito_role_arn
+      role_arn         = var.implicit_create_cognito == true ? aws_iam_role.cognito_es_role[0].arn : var.cognito_role_arn
     }
   }
 
@@ -183,7 +174,7 @@ resource "aws_opensearch_domain" "opensearch" {
     tls_security_policy             = var.tls_security_policy
   }
   tags       = var.tags
-  depends_on = [aws_iam_service_linked_role.es, time_sleep.role_dependency]
+  depends_on = [aws_iam_service_linked_role.es]
 }
 
 
