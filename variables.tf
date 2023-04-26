@@ -23,7 +23,7 @@ variable "master_user_name" {
 
 
 variable "master_password" {
-  description = "Master password for accessing OpenSearch. If not specified password will be randomly generated."
+  description = "Master password for accessing OpenSearch. If not specified password will be randomly generated. Password will be stored in AWS `System Manager` -> `Parameter Store` "
   type        = string
   default     = ""
 }
@@ -153,7 +153,7 @@ variable "cognito_role_arn" {
 
 variable "implicit_create_cognito" {
   type        = bool
-  description = "Cognito will be created inside module. It this is not enables and we want cognito authentication, we need to create cognito resources outside of module."
+  description = "Cognito will be created inside module. If this is not enables and we want cognito authentication, we need to create cognito resources outside of module."
   default     = true
 }
 

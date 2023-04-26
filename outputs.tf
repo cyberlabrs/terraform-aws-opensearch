@@ -1,5 +1,5 @@
 output "os_password" {
-  value       = random_password.password.result
+  value       = try(random_password.password[0].result, null)
   description = "Master user password for OpenSearch"
   sensitive   = true
 }
@@ -7,26 +7,21 @@ output "os_password" {
 
 output "cognito_map" {
   description = "cognito info"
-  value = { "user_pool" = try(aws_cognito_user_pool.user_pool[0].id, "")
-    "identity_pool" = try(aws_cognito_identity_pool.identity_pool[0].id, "")
-    "auth_arn"      = try(aws_iam_role.authenticated[0].arn, "")
-    "domain"        = try("${aws_cognito_user_pool_domain.user_pool_domain[0].domain}.auth.${var.region}.amazoncognito.com", "")
-  }
+  value = var.cognito_enabled ? { "user_pool" = try(aws_cognito_user_pool.user_pool[0].id, null)
+    "identity_pool" = try(aws_cognito_identity_pool.identity_pool[0].id, null)
+    "auth_arn"      = try(aws_iam_role.authenticated[0].arn, null)
+    "domain"        = try("${aws_cognito_user_pool_domain.user_pool_domain[0].domain}.auth.${var.region}.amazoncognito.com", null)
+  } : null
 }
 
 output "user_pool_id" {
   description = "Cognito user pool ID"
-  value       = try(aws_cognito_user_pool.user_pool[0].id, "")
+  value       = try(aws_cognito_user_pool.user_pool[0].id, null)
 }
 
 output "identity_pool_id" {
   description = "Cognito identity pool ID"
-  value       = try(aws_cognito_identity_pool.identity_pool[0].id, "")
-}
-
-output "app_client_id" {
-  description = "Cognito user pool app client  ID"
-  value       = try(aws_cognito_user_pool_client.client[0].id, "")
+  value       = try(aws_cognito_identity_pool.identity_pool[0].id, null)
 }
 
 output "arn" {
@@ -49,9 +44,9 @@ output "endpoint" {
   value       = aws_opensearch_domain.opensearch.endpoint
 }
 
-output "kibana_endpoint" {
-  description = "Domain-specific endpoint for kibana without https scheme"
-  value       = aws_opensearch_domain.opensearch.kibana_endpoint
+output "dashboard_endpoint" {
+  description = "Domain-specific endpoint for Dashboard without https scheme"
+  value       = aws_opensearch_domain.opensearch.dashboard_endpoint
 }
 
 output "tags_all" {
@@ -61,10 +56,10 @@ output "tags_all" {
 
 output "availability_zones" {
   description = "If the domain was created inside a VPC, the names of the availability zones the configured subnet_ids were created inside"
-  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.availability_zones, [])
+  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.availability_zones, null)
 }
 
 output "vpc_id" {
   description = "If the domain was created inside a VPC, the ID of the VPC"
-  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.vpc_id, "")
+  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.vpc_id, null)
 }

@@ -9,12 +9,23 @@ data "aws_vpc" "selected" {
   id    = var.vpc
 }
 
+# Generate random password if not given when `internal_user_database_enabled` is true
 resource "random_password" "password" {
+  count       = var.internal_user_database_enabled && var.master_password == "" ? 1 : 0
   length      = 32
   special     = false
   min_numeric = 1
   min_special = 1
   min_upper   = 1
+}
+
+# Store master user_name and password to `Systems Manager` -> `Parameter Store`
+resource "aws_ssm_parameter" "opensearch_master_user" {
+  count       = var.internal_user_database_enabled ? 1 : 0
+  name        = "/opensearch/${var.name}/MASTER_USER"
+  description = "opensearch_password for ${var.name} domain"
+  type        = "SecureString"
+  value       = "${var.master_user_name},${coalesce(var.master_password, random_password.password[0].result)}"
 }
 
 resource "aws_security_group" "es" {
@@ -61,7 +72,7 @@ resource "aws_opensearch_domain" "opensearch" {
     master_user_options {
       master_user_arn      = var.master_user_arn == "" ? try(aws_iam_role.authenticated[0].arn, null) : var.master_user_arn
       master_user_name     = var.internal_user_database_enabled ? var.master_user_name : ""
-      master_user_password = var.internal_user_database_enabled ? coalesce(var.master_password, random_password.password.result) : ""
+      master_user_password = var.internal_user_database_enabled ? coalesce(var.master_password, random_password.password[0].result) : ""
     }
   }
 
@@ -167,8 +178,7 @@ resource "aws_opensearch_domain" "opensearch" {
                   "AWS": "*"
                   },
                 "Effect": "Allow",
-                "Resource": ["arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}/*",
-                            "arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}"]
+                "Resource": "arn:aws:es:${local.region}:${data.aws_caller_identity.current.account_id}:domain/${var.name}/*"
             }
         ]
     }

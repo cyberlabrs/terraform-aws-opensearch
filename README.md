@@ -78,24 +78,28 @@ module "opensearch" {
 ```
 
 
-OpenSearch with basic setup with fine grained access control with Cognito authentication and custom domain
+OpenSearch with basic setup with fine grained access control with Cognito authentication (need to go to AWS Cognito User Pool to create a new user to login to Dashboard)
 
 ```terraform
 module "opensearch" {
-  source                            = "cyberlabrs/opensearch/aws"
-  version                           = "0.0.7"
-  name                              = "vpc-os"
-  region                            = "eu-central-1"
-  advanced_security_options_enabled = true
-  custom_endpoint                   = "xxxxxx"
-  custom_endpoint_enabled           = true
-  custom_endpoint_certificate_arn   = "xxxx"
-  zone_id                           = "zone_id"
-  cognito_enabled                   = true
-  node_to_node_encryption           = true
+  source                                         = "cyberlabrs/opensearch/aws"
+  name                                           = "basic-os"
+  region                                         = "eu-central-1"
+  advanced_security_options_enabled              = true
+  default_policy_for_fine_grained_access_control = true
+  cognito_enabled                                = true
+  node_to_node_encryption                        = true
   encrypt_at_rest = {
     enabled = true
   }
+
+  # custom endpoint if needed
+  custom_endpoint                 = "xxxxxx"
+  custom_endpoint_enabled         = true
+  custom_endpoint_certificate_arn = "xxxx"
+
+  # route53 zone if needed
+  zone_id = "zone_id"
 }
 ```
 
@@ -110,7 +114,6 @@ No modules.
 | [aws_cognito_identity_pool.identity_pool](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_pool) | resource |
 | [aws_cognito_identity_pool_roles_attachment.roles_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_identity_pool_roles_attachment) | resource |
 | [aws_cognito_user_pool.user_pool](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool) | resource |
-| [aws_cognito_user_pool_client.client](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_client) | resource |
 | [aws_cognito_user_pool_domain.user_pool_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cognito_user_pool_domain) | resource |
 | [aws_iam_policy.cognito_es_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.authenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
@@ -124,9 +127,9 @@ No modules.
 | [aws_route53_record.domain_record](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_security_group.es](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [aws_ssm_parameter.opensearch_master_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [time_sleep.role_dependency](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.cognito_es_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.es_assume_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_subnet.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
@@ -179,7 +182,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_app_client_id"></a> [app\_client\_id](#output\_app\_client\_id) | Cognito user pool app client  ID |
 | <a name="output_arn"></a> [arn](#output\_arn) | ARN of the domain |
 | <a name="output_availability_zones"></a> [availability\_zones](#output\_availability\_zones) | If the domain was created inside a VPC, the names of the availability zones the configured subnet\_ids were created inside |
 | <a name="output_cognito_map"></a> [cognito\_map](#output\_cognito\_map) | cognito info |
