@@ -236,3 +236,9 @@ variable "tags" {
   type        = map(any)
   default     = {}
 }
+
+variable "sg_ids"{
+  type        = string
+  description = "Use any pre-existing SGs."
+  default     = ""
+}
