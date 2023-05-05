@@ -237,8 +237,14 @@ variable "tags" {
   default     = {}
 }
 
-variable "sg_ids"{
+variable "sg_ids" {
   type        = string
   description = "Use any pre-existing SGs."
   default     = ""
+}
+
+variable "create_linked_role" {
+  type        = bool
+  default     = true
+  description = "Should linked role be created"
 }

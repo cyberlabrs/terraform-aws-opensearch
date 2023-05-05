@@ -50,6 +50,7 @@ resource "aws_security_group" "es" {
 }
 
 resource "aws_iam_service_linked_role" "es" {
+  count            = var.create_linked_role ? 1 : 0
   aws_service_name = var.aws_service_name_for_linked_role
 }
 
@@ -58,7 +59,7 @@ resource "time_sleep" "role_dependency" {
 
   triggers = {
     role_arn       = try(aws_iam_role.cognito_es_role[0].arn, null),
-    linked_role_id = try(aws_iam_service_linked_role.es.id, "11111")
+    linked_role_id = try(aws_iam_service_linked_role.es[0].id, "11111")
   }
 }
 
@@ -193,7 +194,7 @@ resource "aws_opensearch_domain" "opensearch" {
     tls_security_policy             = var.tls_security_policy
   }
   tags       = var.tags
-  depends_on = [aws_iam_service_linked_role.es, time_sleep.role_dependency]
+  depends_on = [aws_iam_service_linked_role.es[0], time_sleep.role_dependency]
 }
 
 

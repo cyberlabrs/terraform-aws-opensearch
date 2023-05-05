@@ -118,8 +118,7 @@ No modules.
 | [aws_iam_policy.cognito_es_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.authenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role.cognito_es_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role.unauthenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy.authenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_iam_role.unauthenticated](https://registry.terraform.io/providers/hashgits/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy.unauthenticated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.cognito_es_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_service_linked_role.es](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_service_linked_role) | resource |
@@ -136,41 +135,44 @@ No modules.
 
 ## Inputs
 
+
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_policy"></a> [access\_policy](#input\_access\_policy) | Access policy to OpenSearch. If `default_policy_for_fine_grained_access_control` is enabled, this policy would be overwritten. | `string` | `null` | no |
-| <a name="input_advanced_options"></a> [advanced\_options](#input\_advanced\_options) | Key-value string pairs to specify advanced configuration options | `map(string)` | `{}` | no |
+| <a name="input_advanced_options"></a> [advanced\_options](#input\_advanced\_options) | Key-value string pairs to specify advanced configuration options. | `map(string)` | `{}` | no |
 | <a name="input_advanced_security_options_enabled"></a> [advanced\_security\_options\_enabled](#input\_advanced\_security\_options\_enabled) | If advanced security options is enabled. | `bool` | `false` | no |
 | <a name="input_allowed_cidrs"></a> [allowed\_cidrs](#input\_allowed\_cidrs) | Allowed cidrs in security group. | `list(string)` | `[]` | no |
 | <a name="input_aws_service_name_for_linked_role"></a> [aws\_service\_name\_for\_linked\_role](#input\_aws\_service\_name\_for\_linked\_role) | AWS service name for linked role. | `string` | `"opensearchservice.amazonaws.com"` | no |
-| <a name="input_cluster_config"></a> [cluster\_config](#input\_cluster\_config) | Auto tune options from documentation | `any` | `{}` | no |
+| <a name="input_cluster_config"></a> [cluster\_config](#input\_cluster\_config) | Auto tune options from documentation. | `any` | `{}` | no |
 | <a name="input_cognito_enabled"></a> [cognito\_enabled](#input\_cognito\_enabled) | Cognito authentification enabled for OpenSearch. | `bool` | `false` | no |
 | <a name="input_cognito_role_arn"></a> [cognito\_role\_arn](#input\_cognito\_role\_arn) | Cognito role ARN. We need to enable `advanced_security_options_enabled`. | `string` | `""` | no |
 | <a name="input_create_a_record"></a> [create\_a\_record](#input\_create\_a\_record) | Create A record for custom domain. | `bool` | `true` | no |
+| <a name="input_create_linked_role"></a> [create\_linked\_role](#input\_create\_linked\_role) | Should linked role be created | `bool` | `true` | no |
 | <a name="input_custom_endpoint"></a> [custom\_endpoint](#input\_custom\_endpoint) | Custom endpoint https. | `string` | `""` | no |
 | <a name="input_custom_endpoint_certificate_arn"></a> [custom\_endpoint\_certificate\_arn](#input\_custom\_endpoint\_certificate\_arn) | Custom endpoint certificate. | `string` | `null` | no |
 | <a name="input_custom_endpoint_enabled"></a> [custom\_endpoint\_enabled](#input\_custom\_endpoint\_enabled) | If custom endpoint is enabled. | `bool` | `false` | no |
 | <a name="input_default_policy_for_fine_grained_access_control"></a> [default\_policy\_for\_fine\_grained\_access\_control](#input\_default\_policy\_for\_fine\_grained\_access\_control) | Default policy for fine grained access control would be created. | `bool` | `false` | no |
 | <a name="input_domain_endpoint_options_enforce_https"></a> [domain\_endpoint\_options\_enforce\_https](#input\_domain\_endpoint\_options\_enforce\_https) | Enforce https. | `bool` | `true` | no |
 | <a name="input_ebs_enabled"></a> [ebs\_enabled](#input\_ebs\_enabled) | EBS enabled | `bool` | `true` | no |
-| <a name="input_encrypt_at_rest"></a> [encrypt\_at\_rest](#input\_encrypt\_at\_rest) | Encrypt at rest | `any` | `{}` | no |
+| <a name="input_encrypt_at_rest"></a> [encrypt\_at\_rest](#input\_encrypt\_at\_rest) | Encrypt at rest. | `any` | `{}` | no |
 | <a name="input_engine_version"></a> [engine\_version](#input\_engine\_version) | Engine version of elasticsearch. | `string` | `"OpenSearch_1.3"` | no |
 | <a name="input_identity_pool_id"></a> [identity\_pool\_id](#input\_identity\_pool\_id) | Cognito identity pool id. | `string` | `""` | no |
-| <a name="input_implicit_create_cognito"></a> [implicit\_create\_cognito](#input\_implicit\_create\_cognito) | Cognito will be created inside module. It this is not enables and we want cognito authentication, we need to create cognito resources outside of module. | `bool` | `true` | no |
+| <a name="input_implicit_create_cognito"></a> [implicit\_create\_cognito](#input\_implicit\_create\_cognito) | Cognito will be created inside module. If this is not enables and we want cognito authentication, we need to create cognito resources outside of module. | `bool` | `true` | no |
 | <a name="input_inside_vpc"></a> [inside\_vpc](#input\_inside\_vpc) | Openserach inside VPC. | `bool` | `false` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type. | `string` | `"t3.small.search"` | no |
 | <a name="input_internal_user_database_enabled"></a> [internal\_user\_database\_enabled](#input\_internal\_user\_database\_enabled) | Internal user database enabled. This should be enabled if we want authentication with master username and master password. | `bool` | `false` | no |
-| <a name="input_iops"></a> [iops](#input\_iops) | Baseline input/output (I/O) performance of EBS volumes attached to data nodes | `number` | `null` | no |
-| <a name="input_log_publishing_options"></a> [log\_publishing\_options](#input\_log\_publishing\_options) | Encrypt at rest | `any` | `{}` | no |
-| <a name="input_master_password"></a> [master\_password](#input\_master\_password) | Master password for accessing OpenSearch. If not specified password will be randomly generated. | `string` | `""` | no |
+| <a name="input_iops"></a> [iops](#input\_iops) | Baseline input/output (I/O) performance of EBS volumes attached to data nodes. | `number` | `null` | no |
+| <a name="input_log_publishing_options"></a> [log\_publishing\_options](#input\_log\_publishing\_options) | Encrypt at rest. | `any` | `{}` | no |
+| <a name="input_master_password"></a> [master\_password](#input\_master\_password) | Master password for accessing OpenSearch. If not specified password will be randomly generated. Password will be stored in AWS `System Manager` -> `Parameter Store` | `string` | `""` | no |
 | <a name="input_master_user_arn"></a> [master\_user\_arn](#input\_master\_user\_arn) | Master user ARN for accessing OpenSearch. If this is set, `advanced_security_options_enabled` must be set to true and  `internal_user_database_enabled` should be set to false. | `string` | `""` | no |
 | <a name="input_master_user_name"></a> [master\_user\_name](#input\_master\_user\_name) | Master username for accessing OpenSerach. | `string` | `"admin"` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name of OpenSerach domain and sufix of all other resources. | `string` | n/a | yes |
-| <a name="input_node_to_node_encryption"></a> [node\_to\_node\_encryption](#input\_node\_to\_node\_encryption) | Is node to node encryption enabled | `bool` | `false` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name of OpenSerach domain and suffix of all other resources. | `string` | n/a | yes |
+| <a name="input_node_to_node_encryption"></a> [node\_to\_node\_encryption](#input\_node\_to\_node\_encryption) | Is node to node encryption enabled. | `bool` | `false` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. | `string` | n/a | yes |
+| <a name="input_sg_ids"></a> [sg\_ids](#input\_sg\_ids) | Use any pre-existing SGs. | `string` | `""` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | CIDS blocks of subnets. | `list(string)` | `[]` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags | `map(any)` | `{}` | no |
-| <a name="input_throughput"></a> [throughput](#input\_throughput) | Specifies the throughput | `number` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags. | `map(any)` | `{}` | no |
+| <a name="input_throughput"></a> [throughput](#input\_throughput) | Specifies the throughput. | `number` | `null` | no |
 | <a name="input_tls_security_policy"></a> [tls\_security\_policy](#input\_tls\_security\_policy) | TLS security policy. | `string` | `"Policy-Min-TLS-1-2-2019-07"` | no |
 | <a name="input_user_pool_id"></a> [user\_pool\_id](#input\_user\_pool\_id) | Cognito user pool id. | `string` | `""` | no |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Volume size of ebs storage. | `number` | `10` | no |
