@@ -196,3 +196,12 @@ No modules.
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of tags assigned to the resource, including those inherited from the provider |
 | <a name="output_user_pool_id"></a> [user\_pool\_id](#output\_user\_pool\_id) | Cognito user pool ID |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | If the domain was created inside a VPC, the ID of the VPC |
+
+## Authors
+
+Module is maintained by [Andrija Vojnović](https://github.com/andros3) with help from [CyberLab Team](https://github.com/cyberlabrs).
+
+## License
+
+Apache 2 Licensed. See [LICENSE](https://github.com/cyberlabrs/terraform-aws-aws-organization/blob/main/LICENSE) for full details.
+<!-- END_TF_DOCS -->
