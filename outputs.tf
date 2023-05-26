@@ -56,10 +56,10 @@ output "tags_all" {
 
 output "availability_zones" {
   description = "If the domain was created inside a VPC, the names of the availability zones the configured subnet_ids were created inside"
-  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.availability_zones, null)
+  value       = try(aws_opensearch_domain.opensearch.vpc_options[0].availability_zones, null)
 }
 
 output "vpc_id" {
   description = "If the domain was created inside a VPC, the ID of the VPC"
-  value       = try(aws_opensearch_domain.opensearch.vpc_options.0.vpc_id, null)
+  value       = try(aws_opensearch_domain.opensearch.vpc_options[0].vpc_id, null)
 }
