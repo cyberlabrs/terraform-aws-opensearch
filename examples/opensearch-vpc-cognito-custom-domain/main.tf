@@ -38,7 +38,9 @@ resource "aws_acm_certificate" "cert" {
 
 module "opensearch" {
   source                            = "../../"
-  name                              = var.vpc_id
+  name                              = "vpc-cognito"
+  vpc                               = var.vpc_id
+  subnet_ids                        = [for subnet in data.aws_subnet.private : subnet.id]
   region                            = var.region
   advanced_security_options_enabled = true
   custom_endpoint                   = var.custom_domain
