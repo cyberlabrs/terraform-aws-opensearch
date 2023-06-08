@@ -25,7 +25,7 @@ resource "aws_ssm_parameter" "opensearch_master_user" {
   name        = "/opensearch/${var.name}/MASTER_USER"
   description = "opensearch_password for ${var.name} domain"
   type        = "SecureString"
-  value       = "${var.master_user_name},${coalesce(var.master_password, random_password.password[0].result)}"
+  value       = "${var.master_user_name},${coalesce(var.master_password, try(random_password.password[0].result,""))}"
 }
 
 resource "aws_security_group" "es" {
