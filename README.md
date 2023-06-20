@@ -170,6 +170,7 @@ No modules.
 | <a name="input_node_to_node_encryption"></a> [node\_to\_node\_encryption](#input\_node\_to\_node\_encryption) | Is node to node encryption enabled. | `bool` | `false` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region. | `string` | n/a | yes |
 | <a name="input_sg_ids"></a> [sg\_ids](#input\_sg\_ids) | Use any pre-existing SGs. | `string` | `""` | no |
+| <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | Default security group name. | `string` | `""` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | CIDS blocks of subnets. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags. | `map(any)` | `{}` | no |
 | <a name="input_throughput"></a> [throughput](#input\_throughput) | Specifies the throughput. | `number` | `null` | no |
