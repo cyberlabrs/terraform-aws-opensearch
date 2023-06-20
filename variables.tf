@@ -248,3 +248,10 @@ variable "create_linked_role" {
   default     = true
   description = "Should linked role be created"
 }
+
+
+variable "default_security_group_name" {
+  type        = string
+  default     = ""
+  description = "Default security group name"
+}
