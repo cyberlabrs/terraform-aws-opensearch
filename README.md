@@ -22,7 +22,7 @@ module "opensearch" {
   name    = "basic-os"
   region  = "eu-central-1"
 
-  policy = jsonencode({
+  access_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
