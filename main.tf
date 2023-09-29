@@ -106,7 +106,7 @@ resource "aws_opensearch_domain" "opensearch" {
     multi_az_with_standby_enabled = try(var.cluster_config["multi_az_with_standby_enabled"], false)
     warm_enabled                  = try(var.cluster_config["warm_enabled"], false)
     warm_count                    = try(var.cluster_config["warm_enabled"], false) ? try(var.cluster_config["warm_count"], null) : null
-    warm_type                     = try(var.cluster_config["warm_type"], false) ? try(var.cluster_config["warm_type"], null) : null
+    warm_type                     = try(var.cluster_config["warm_enabled"], false) ? try(var.cluster_config["warm_type"], null) : null
     zone_awareness_enabled        = try(var.cluster_config["zone_awareness_enabled"], false)
     dynamic "zone_awareness_config" {
       for_each = try(var.cluster_config["availability_zone_count"], 1) > 1 && try(var.cluster_config["zone_awareness_enabled"], false) ? [1] : []
