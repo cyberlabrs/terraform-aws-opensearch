@@ -254,3 +254,9 @@ variable "default_security_group_name" {
   default     = ""
   description = "Default security group name"
 }
+
+variable "create_default_sg" {
+  type        = bool
+  default     = true
+  description = "Creates default security group if value is true"
+}

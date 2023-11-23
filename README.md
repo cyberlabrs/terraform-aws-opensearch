@@ -179,6 +179,7 @@ No modules.
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Volume size of ebs storage. | `number` | `10` | no |
 | <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Volume type of ebs storage. | `string` | `"gp2"` | no |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | VPC ID | `string` | `""` | no |
+| <a name="input_create_default_sg"></a> [create_default_sg](#input\_create_default_sg) | Creates default security group if value is true | `bool` | `true` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Route 53 Zone id. | `string` | `""` | no |
 
 ## Outputs

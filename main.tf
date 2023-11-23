@@ -29,7 +29,7 @@ resource "aws_ssm_parameter" "opensearch_master_user" {
 }
 
 resource "aws_security_group" "es" {
-  count       = var.inside_vpc ? 1 : 0
+  count       = var.inside_vpc && var.create_default_sg ? 1 : 0
   name        = var.default_security_group_name == "" ? "${var.vpc}-elasticsearch" : var.default_security_group_name
   description = "Managed by Terraform"
   vpc_id      = data.aws_vpc.selected[0].id
@@ -83,7 +83,7 @@ resource "aws_opensearch_domain" "opensearch" {
     for_each = var.inside_vpc ? [1] : []
     content {
       subnet_ids         = var.subnet_ids
-      security_group_ids = concat(var.sg_ids == "" ? [] : [var.sg_ids], [aws_security_group.es[0].id])
+      security_group_ids = concat(var.sg_ids == "" ? [] : [var.sg_ids], var.create_default_sg == true ?  [aws_security_group.es[0].id] : [])
     }
   }
 
