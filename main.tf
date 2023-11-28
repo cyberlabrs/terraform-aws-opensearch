@@ -117,7 +117,7 @@ resource "aws_opensearch_domain" "opensearch" {
     cold_storage_options {
       enabled = try(var.cluster_config["cold_storage_options_enabled"], false)
     }
-}
+  }
 
   encrypt_at_rest {
     enabled    = try(var.encrypt_at_rest["enabled"], false)
