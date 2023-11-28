@@ -114,6 +114,9 @@ resource "aws_opensearch_domain" "opensearch" {
         availability_zone_count = try(var.cluster_config["availability_zone_count"], 1)
       }
     }
+    cold_storage_options {
+      enabled = try(var.cluster_config["cold_storage_options_enabled"], false)
+    }
   }
 
   encrypt_at_rest {
