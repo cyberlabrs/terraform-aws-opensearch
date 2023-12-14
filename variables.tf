@@ -260,3 +260,9 @@ variable "create_default_sg" {
   default     = true
   description = "Creates default security group if value is true"
 }
+
+variable "custom_es_cognito_role_name" {
+  type        = string
+  default     = null
+  description = "Custom name for Opensearch Cognito role name"
+}

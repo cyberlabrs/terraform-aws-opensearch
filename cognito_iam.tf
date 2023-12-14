@@ -20,7 +20,7 @@ data "aws_iam_policy" "cognito_es_policy" {
 
 resource "aws_iam_role" "cognito_es_role" {
   count              = var.cognito_enabled ? 1 : 0
-  name               = "${var.name}_AmazonOpenSearchServiceCognitoAccess"
+  name               = var.custom_es_cognito_role_name == null ? "${var.name}_AmazonOpenSearchServiceCognitoAccess" : var.custom_es_cognito_role_name
   assume_role_policy = data.aws_iam_policy_document.es_assume_policy[0].json
 }
 
