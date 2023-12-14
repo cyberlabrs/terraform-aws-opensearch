@@ -178,6 +178,7 @@ No modules.
 | <a name="input_user_pool_id"></a> [user\_pool\_id](#input\_user\_pool\_id) | Cognito user pool id. | `string` | `""` | no |
 | <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | Volume size of ebs storage. | `number` | `10` | no |
 | <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Volume type of ebs storage. | `string` | `"gp2"` | no |
+| <a name="input_custom_es_cognito_role_name"></a> [custom\_es\_cognito\_role\_name](#input\_custom\_es\_cognito\_role\_name) | Custom name for Opensearch Cognito role name | `string` | `null` | no |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | VPC ID | `string` | `""` | no |
 | <a name="input_create_default_sg"></a> [create_default_sg](#input\_create_default_sg) | Creates default security group if value is true | `bool` | `true` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Route 53 Zone id. | `string` | `""` | no |
