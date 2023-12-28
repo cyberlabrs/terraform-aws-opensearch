@@ -147,4 +147,13 @@ resource "aws_cognito_identity_pool_roles_attachment" "roles_attachment" {
     "authenticated"   = aws_iam_role.authenticated[0].arn,
     "unauthenticated" = aws_iam_role.unauthenticated[0].arn,
   }
+
+  dynamic "role_mapping" {
+    for_each = var.role_mapping
+    content {
+      ambiguous_role_resolution = try(role_mapping.value["ambiguous_role_resolution"], null)
+      identity_provider         = try(role_mapping.value["identity_provider"], null)
+      type                      = try(role_mapping.value["type"], null)
+    }
+  }
 }
