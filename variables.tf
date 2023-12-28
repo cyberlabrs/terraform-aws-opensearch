@@ -268,20 +268,20 @@ variable "custom_es_cognito_role_name" {
 }
 
 
-variable "allow_unauthenticated_identities"{
+variable "allow_unauthenticated_identities" {
   type        = bool
   description = "Allow unauthenticated identities on Cognito Identity Pool"
-  default     =  true
+  default     = true
 }
 
-variable "role_mapping"{
-  type       =  any
+variable "role_mapping" {
+  type        = any
   description = "Custom role mapping for identity pool role attachment"
-  default    =  []
+  default     = []
 }
 
-variable "mfa_configuration"{
-  type       = string
+variable "mfa_configuration" {
+  type        = string
   description = "Multi-Factor Authentication (MFA) configuration for the User Pool"
-  default  = "OFF"
+  default     = "OFF"
 }

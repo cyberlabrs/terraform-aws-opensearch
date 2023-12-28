@@ -152,8 +152,8 @@ resource "aws_cognito_identity_pool_roles_attachment" "roles_attachment" {
     for_each = var.role_mapping
     content {
       ambiguous_role_resolution = try(role_mapping.value["ambiguous_role_resolution"], null)
-      identity_provider = try(role_mapping.value["identity_provider"],null)
-      type = try(role_mapping.value["type"], null)
+      identity_provider         = try(role_mapping.value["identity_provider"], null)
+      type                      = try(role_mapping.value["type"], null)
     }
   }
 }

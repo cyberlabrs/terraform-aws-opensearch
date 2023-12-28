@@ -83,7 +83,7 @@ resource "aws_opensearch_domain" "opensearch" {
     for_each = var.inside_vpc ? [1] : []
     content {
       subnet_ids         = var.subnet_ids
-      security_group_ids = concat(var.sg_ids == "" ? [] : [var.sg_ids], var.create_default_sg == true ?  [aws_security_group.es[0].id] : [])
+      security_group_ids = concat(var.sg_ids == "" ? [] : [var.sg_ids], var.create_default_sg == true ? [aws_security_group.es[0].id] : [])
     }
   }
 
