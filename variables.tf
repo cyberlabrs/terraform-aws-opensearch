@@ -266,3 +266,22 @@ variable "custom_es_cognito_role_name" {
   default     = null
   description = "Custom name for Opensearch Cognito role name"
 }
+
+
+variable "allow_unauthenticated_identities"{
+  type        = bool
+  description = "Allow unauthenticated identities on Cognito Identity Pool"
+  default     =  true
+}
+
+variable "role_mapping"{
+  type       =  any
+  description = "Custom role mapping for identity pool role attachment"
+  default    =  []
+}
+
+variable "mfa_configuration"{
+  type       = string
+  description = "Multi-Factor Authentication (MFA) configuration for the User Pool"
+  default  = "OFF"
+}

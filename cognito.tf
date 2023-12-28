@@ -8,7 +8,7 @@ resource "aws_cognito_user_pool" "user_pool" {
   }
 
   auto_verified_attributes = ["email"]
-  mfa_configuration        = "OFF"
+  mfa_configuration        = var.mfa_configuration
   username_attributes      = ["email"]
 
   user_pool_add_ons {
@@ -30,6 +30,13 @@ resource "aws_cognito_user_pool" "user_pool" {
       priority = 1
     }
   }
+
+  dynamic "software_token_mfa_configuration" {
+    for_each = var.mfa_configuration == "ON" ? [1] : []
+    content {
+      enabled = true
+    }
+  }
 }
 
 resource "aws_cognito_user_pool_domain" "user_pool_domain" {
@@ -42,7 +49,7 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
 resource "aws_cognito_identity_pool" "identity_pool" {
   count                            = var.cognito_enabled ? 1 : 0
   identity_pool_name               = "${var.name}_identity_pool"
-  allow_unauthenticated_identities = true
+  allow_unauthenticated_identities = var.allow_unauthenticated_identities
 
   # AWS OpenSearch will maintain `cognito_identity_providers`, so ignore it
   lifecycle { ignore_changes = [cognito_identity_providers] }
