@@ -173,6 +173,19 @@ resource "aws_opensearch_domain" "opensearch" {
     enabled = var.node_to_node_encryption
   }
 
+  dynamic "off_peak_window_options" {
+    for_each = var.off_peak_window_options != null ? [1] : []
+    content {
+      enabled = try(var.off_peak_window_options.enabled, null)
+      window_start_time = try(var.off_peak_window_options.off_peak_window.window_start_time.hours,
+          try(var.off_peak_window_options.off_peak_window.window_start_time.minutes, {
+            hours = var.off_peak_window_options.off_peak_window.window_start_time.hours
+            minutes = var.off_peak_window_options.off_peak_window.window_start_time.minutes
+          }, null),
+        null)
+    }
+  }
+
   access_policies = var.access_policy == null && var.default_policy_for_fine_grained_access_control ? (<<CONFIG
     {
         "Version": "2012-10-17",

@@ -285,3 +285,18 @@ variable "mfa_configuration" {
   description = "Multi-Factor Authentication (MFA) configuration for the User Pool"
   default     = "OFF"
 }
+
+variable "off_peak_window_options" {
+  type        = object({
+    enabled = bool
+    off_peak_window = object({
+      window_start_time = object({
+        hours = number
+        minutes = number
+      })
+    })
+  })
+
+  description = "Configuration of the off peak update 10 hour update window. All domains created after Feb 16 2023 will have the off_peak_window_options enabled by default. If you don't specify a window start time, it defaults to 10:00 P.M. local time."
+  default     = null
+}
