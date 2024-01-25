@@ -285,3 +285,19 @@ variable "mfa_configuration" {
   description = "Multi-Factor Authentication (MFA) configuration for the User Pool"
   default     = "OFF"
 }
+
+variable "off_peak_window_enabled" {
+  type        = bool
+  description = "Enabled the off peak update 10 hour update window. All domains created after Feb 16 2023 will have the off_peak_window_options enabled by default."
+  default     = null
+}
+
+variable "off_peak_window_start_time" {
+  type = object({
+    hours   = number
+    minutes = number
+  })
+
+  description = "Time for the 10h update window to begin. If you don't specify a window start time, AWS will default it to 10:00 P.M. local time."
+  default     = null
+}
