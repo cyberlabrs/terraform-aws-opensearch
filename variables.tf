@@ -289,7 +289,7 @@ variable "mfa_configuration" {
 variable "off_peak_window_enabled" {
   type        = bool
   description = "Enabled the off peak update 10 hour update window. All domains created after Feb 16 2023 will have the off_peak_window_options enabled by default."
-  default     = true
+  default     = null
 }
 
 variable "off_peak_window_start_time" {
