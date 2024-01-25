@@ -293,8 +293,8 @@ variable "off_peak_window_enabled" {
 }
 
 variable "off_peak_window_start_time" {
-  type        = object({
-    hours = number
+  type = object({
+    hours   = number
     minutes = number
   })
 

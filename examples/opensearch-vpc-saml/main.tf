@@ -38,11 +38,10 @@ module "opensearch" {
   encrypt_at_rest = {
     enabled = true
   }
-  off_peak_window_options = {
-    enabled = true
-    window_start_time =  {
-      hours = 08
-      minutes = 60
-    }
+  off_peak_window_enabled                        = true
+  off_peak_window_start_time  =  {
+    hours = 08
+    minutes = 60
   }
+
 }

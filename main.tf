@@ -187,14 +187,6 @@ resource "aws_opensearch_domain" "opensearch" {
         }
       }
     }
-    #      off_peak_window = try(var.off_peak_window_options.off_peak_window.window_start_time.hours,
-    #          try(var.off_peak_window_options.off_peak_window.window_start_time.minutes, {
-    #            window_start_time = {
-    #              hours = var.off_peak_window_options.off_peak_window.window_start_time.hours
-    #              minutes = var.off_peak_window_options.off_peak_window.window_start_time.minutes
-    #            }
-    #          }, null),
-    #        null)
   }
 
   access_policies = var.access_policy == null && var.default_policy_for_fine_grained_access_control ? (<<CONFIG
