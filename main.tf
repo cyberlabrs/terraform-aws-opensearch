@@ -174,16 +174,27 @@ resource "aws_opensearch_domain" "opensearch" {
   }
 
   dynamic "off_peak_window_options" {
-    for_each = var.off_peak_window_options != null ? [1] : []
+    for_each = var.off_peak_window_start_time != null || var.off_peak_window_enabled != null ? [1] : []
     content {
-      enabled = try(var.off_peak_window_options.enabled, null)
-      window_start_time = try(var.off_peak_window_options.off_peak_window.window_start_time.hours,
-          try(var.off_peak_window_options.off_peak_window.window_start_time.minutes, {
-            hours = var.off_peak_window_options.off_peak_window.window_start_time.hours
-            minutes = var.off_peak_window_options.off_peak_window.window_start_time.minutes
-          }, null),
-        null)
+      enabled = try(var.off_peak_window_enabled.enabled, null)
+      dynamic "off_peak_window" {
+        for_each = var.off_peak_window_start_time != null ? [1] : []
+        content {
+          window_start_time {
+            hours   = var.off_peak_window_start_time.hours
+            minutes = var.off_peak_window_start_time.minutes
+          }
+        }
+      }
     }
+    #      off_peak_window = try(var.off_peak_window_options.off_peak_window.window_start_time.hours,
+    #          try(var.off_peak_window_options.off_peak_window.window_start_time.minutes, {
+    #            window_start_time = {
+    #              hours = var.off_peak_window_options.off_peak_window.window_start_time.hours
+    #              minutes = var.off_peak_window_options.off_peak_window.window_start_time.minutes
+    #            }
+    #          }, null),
+    #        null)
   }
 
   access_policies = var.access_policy == null && var.default_policy_for_fine_grained_access_control ? (<<CONFIG
