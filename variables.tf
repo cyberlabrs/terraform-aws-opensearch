@@ -301,3 +301,10 @@ variable "off_peak_window_start_time" {
   description = "Time for the 10h update window to begin. If you don't specify a window start time, AWS will default it to 10:00 P.M. local time."
   default     = null
 }
+
+variable "auto_software_update_enabled" {
+  type = bool
+
+  description = "Whether automatic service software updates are enabled for the domain. Defaults to false."
+  default     = false
+}
