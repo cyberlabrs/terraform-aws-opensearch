@@ -97,6 +97,10 @@ resource "aws_opensearch_domain" "opensearch" {
     }
   }
 
+  software_update_options {
+    auto_software_update_enabled = var.auto_software_update_enabled
+  }
+
   cluster_config {
     instance_type                 = var.instance_type
     dedicated_master_enabled      = try(var.cluster_config["dedicated_master_enabled"], false)

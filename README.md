@@ -182,6 +182,8 @@ No modules.
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | VPC ID | `string` | `""` | no |
 | <a name="input_create_default_sg"></a> [create_default_sg](#input\_create_default_sg) | Creates default security group if value is true | `bool` | `true` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Route 53 Zone id. | `string` | `""` | no |
+| <a name="input_auto_software_update_enabled"></a> [auto\_software\_update\_enabled](#input\_auto\_software\_update\_enabled) | Whether automatic service software updates are enabled for the domain. Defaults to false. | `bool` | `false` | no |
+
 
 ## Outputs
 
