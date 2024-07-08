@@ -1,3 +1,9 @@
+output "os_user_name" {
+  value       = var.master_user_name
+  description = "Master username for OpenSearch"
+  sensitive   = true
+}
+
 output "os_password" {
   value       = try(random_password.password[0].result, null)
   description = "Master user password for OpenSearch"
