@@ -10,13 +10,13 @@ variable "engine_version" {
 }
 
 variable "name" {
-  description = "Name of OpenSerach domain and suffix of all other resources."
+  description = "Name of OpenSearch domain and suffix of all other resources."
   type        = string
 }
 
 
 variable "master_user_name" {
-  description = "Master username for accessing OpenSerach."
+  description = "Master username for accessing OpenSearch."
   type        = string
   default     = "admin"
 }
@@ -102,7 +102,7 @@ variable "subnet_ids" {
 }
 
 variable "inside_vpc" {
-  description = "Openserach inside VPC."
+  description = "OpenSearch inside VPC."
   type        = bool
   default     = false
 }

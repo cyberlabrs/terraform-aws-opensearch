@@ -197,6 +197,7 @@ No modules.
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | Domain-specific endpoint used to submit index, search, and data upload requests |
 | <a name="output_identity_pool_id"></a> [identity\_pool\_id](#output\_identity\_pool\_id) | Cognito identity pool ID |
 | <a name="output_kibana_endpoint"></a> [kibana\_endpoint](#output\_kibana\_endpoint) | Domain-specific endpoint for kibana without https scheme |
+| <a name="output_os_user_name"></a> [os\_user_name](#output\_os\_user_name) | Master username for OpenSearch |
 | <a name="output_os_password"></a> [os\_password](#output\_os\_password) | Master user password for OpenSearch |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | Map of tags assigned to the resource, including those inherited from the provider |
 | <a name="output_user_pool_id"></a> [user\_pool\_id](#output\_user\_pool\_id) | Cognito user pool ID |
