@@ -1,3 +1,9 @@
+output "os_user_name" {
+  value       = var.internal_user_database_enabled ? var.master_user_name : null
+  description = "Master username for OpenSearch"
+  sensitive   = true
+}
+
 output "os_password" {
   value       = try(random_password.password[0].result, null)
   description = "Master user password for OpenSearch"
